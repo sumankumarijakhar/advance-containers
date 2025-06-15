@@ -73,21 +73,11 @@ This project is a containerized web application built using Python (Flask) and P
 
 - `GET /user/<id>` – Get a user by ID
 
-## Security Notes
-
-- App runs as non-root user inside container
-- Environment variables are used for DB credentials
-- Only required ports are exposed
-- Base image is slim and lightweight
-
 ## Volumes and Networking
 
 - PostgreSQL data is saved using a Docker volume named `pgdata`
 - A custom Docker network is used so the app and DB can talk securely
 
-## Sample Data
-
-You can use the example curl commands above to test user creation and fetching.
 
 ## Stopping Everything
 
@@ -97,9 +87,6 @@ To stop and remove containers:
 docker compose down
 ```
 
-## Optional / Bonus
-
-You can expose this app to the public using Cloudflare Tunnel, but that part is not included here.
 
 ## Author
 
