@@ -1,0 +1,36 @@
+services:
+  api:
+    build: ./app
+    image: api-app:latest
+    container_name: api
+    env_file: .env
+    environment:
+      POSTGRES_HOST: db        # override host only
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    networks: [app-net]
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    container_name: db
+    env_file: .env             # credentials & db name
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-appuser}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks: [app-net]
+    restart: unless-stopped
+
+volumes:
+  db-data:
+
+networks:
+  app-net:
+    driver: bridge
